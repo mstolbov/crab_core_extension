@@ -1,0 +1,11 @@
+{
+  "name": "Word Scorer, Nitrio Edition",
+  "description": "It's Google Chrome extension for Scrabble scorer which named CrabCore",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "background": {
+    "persistent": false,
+    "scripts": ["main.js"]
+  },
+  "permissions": ["contextMenus", "notifications"]
+}
