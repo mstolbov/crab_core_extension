@@ -1,25 +1,38 @@
 'use strict';
 
-function onClickHandler(info, tab) {
-  fetch("https://crab-core.herokuapp.com/score/"+info.selectionText)
-  .then(function(response) { return response.json(); })
-  .then(function(score) {
-    if (score.valid)
-      new Notification("This word is valid", {
+function CrabCore(host) {
+  var self = this;
+  this.host = host || "http://localhost";
+
+  this.handleContextClick = function(info, tab) {
+    self.getScore(info.selectionText, self.notify);
+  };
+
+  this.getScore = function(word, callback) {
+    fetch(self.host+'/score/'+word)
+    .then(function(response) { return response.json(); })
+    .then(function(score) { callback(score) })
+    .catch( console.error );
+  };
+
+  this.notify = function(score) {
+    if (score.valid) {
+      new Notification('This word is valid', {
         body: '"'+score.word+'"'+' score: '+score.score
       })
-    else
-      new Notification("Sorry, this word is not valid :(")
-    end
-  })
-  .catch( console.error );
-};
+    } else {
+      new Notification('Sorry, this word is not valid :(')
+    }
+  };
+}
 
-chrome.contextMenus.onClicked.addListener(onClickHandler);
+var scorer = new CrabCore('https://crab-core.herokuapp.com');
+
+chrome.contextMenus.onClicked.addListener(scorer.handleContextClick);
 
 chrome.runtime.onInstalled.addListener(function() {
-  var context = "selection";
-  var title = "Score word";
-  var id = "score_word";
-  chrome.contextMenus.create({"title": title, "contexts":[context], "id": id});
+  var context = 'selection';
+  var title = 'Score word';
+  var id = 'score_word';
+  chrome.contextMenus.create({'title': title, 'contexts':[context], 'id': id});
 });
