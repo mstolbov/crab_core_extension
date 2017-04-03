@@ -10,6 +10,7 @@
   "permissions": [
     "contextMenus",
     "notifications",
-    "*://*/*"
+    "http://*/*",
+    "https://*/*"
   ]
 }

@@ -1,18 +1,23 @@
 'use strict';
 
-function CrabCore(host) {
+function CrabCoreScorer(options) {
   var self = this;
-  this.host = host || "http://localhost";
-
-  this.handleContextClick = function(info, tab) {
-    self.getScore(info.selectionText, self.notify);
-  };
+  this.host = options.host || "http://localhost";
 
   this.getScore = function(word, callback) {
     fetch(self.host+'/score/'+word)
     .then(function(response) { return response.json(); })
     .then(function(score) { callback(score) })
     .catch( console.error );
+  };
+}
+
+function CrabCore(options) {
+  var self = this;
+  this.scorer = options.scorer || new CrabCoreScorer();
+
+  this.handleContextClick = function(info, tab) {
+    self.scorer.getScore(info.selectionText, self.notify);
   };
 
   this.notify = function(score) {
@@ -30,9 +35,10 @@ function CrabCore(host) {
   };
 }
 
-var scorer = new CrabCore('https://crab-core.herokuapp.com');
+var scorer = new CrabCoreScorer({host: 'https://crab-core.herokuapp.com'});
+var core = new CrabCore({scorer: scorer});
 
-chrome.contextMenus.onClicked.addListener(scorer.handleContextClick);
+chrome.contextMenus.onClicked.addListener(core.handleContextClick);
 
 chrome.runtime.onInstalled.addListener(function() {
   var context = 'selection';
