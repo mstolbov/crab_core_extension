@@ -1,21 +1,18 @@
-function sendScoreRequest(word) {
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", "https://crab-core.herokuapp.com/score/"+word, true);
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState == 4) {
-      var resp = JSON.parse(xhr.responseText);
-      if (resp.valid)
-        new Notification("This word is valid", {body: "\""+resp.word+"\""+" score: "+resp.score})
-      else
-        new Notification("Sorry, this word is not valid :(")
-      end
-    }
-  }
-  xhr.send();
-};
+'use strict';
 
 function onClickHandler(info, tab) {
-  sendScoreRequest(info.selectionText);
+  fetch("https://crab-core.herokuapp.com/score/"+info.selectionText)
+  .then(function(response) { return response.json(); })
+  .then(function(score) {
+    if (score.valid)
+      new Notification("This word is valid", {
+        body: '"'+score.word+'"'+' score: '+score.score
+      })
+    else
+      new Notification("Sorry, this word is not valid :(")
+    end
+  })
+  .catch( console.error );
 };
 
 chrome.contextMenus.onClicked.addListener(onClickHandler);
