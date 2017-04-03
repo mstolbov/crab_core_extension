@@ -16,13 +16,17 @@ function CrabCore(host) {
   };
 
   this.notify = function(score) {
+    var notification;
     if (score.valid) {
-      new Notification('This word is valid', {
+      notification = new Notification('This word is valid', {
         body: '"'+score.word+'"'+' score: '+score.score
       })
     } else {
-      new Notification('Sorry, this word is not valid :(')
+      notification = new Notification('Sorry, this word is not valid :(')
     }
+    setTimeout(function() {
+      notification.close();
+    }, 5000);
   };
 }
 
