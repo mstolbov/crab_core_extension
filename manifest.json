@@ -1,11 +1,11 @@
 {
   "name": "Word Scorer, Nitrio Edition",
   "description": "Score selected word in CrabCore (Scrabble Scorer) by Nitrio",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "manifest_version": 2,
   "background": {
     "persistent": false,
-    "scripts": ["main.js"]
+    "scripts": ["main-min.js"]
   },
   "permissions": [
     "contextMenus",
