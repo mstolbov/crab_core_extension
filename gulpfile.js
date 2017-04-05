@@ -12,4 +12,11 @@ gulp.task("main", () => {
   .pipe(gulp.dest(destination));
 });
 
-gulp.task("default", ["main"])
+gulp.task("content", () => {
+  return gulp.src("./src/content.js")
+  .pipe(browserify({ transform: ['babelify'] }))
+  .pipe(minify({noSource: true}))
+  .pipe(gulp.dest(destination));
+});
+
+gulp.task("default", ["main", "content"])

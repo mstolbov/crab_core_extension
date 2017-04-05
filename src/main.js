@@ -1,11 +1,10 @@
 import Scorer from './scorer';
-import Notifier from './notifier';
 
 let scorer = new Scorer({host: 'https://crab-core.herokuapp.com'});
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   scorer.getScore(info.selectionText)
-  .then(score => Notifier.notify(score));
+  .then(score => chrome.tabs.sendMessage(tab.id, {score: score}));
 });
 
 chrome.runtime.onInstalled.addListener(() => {

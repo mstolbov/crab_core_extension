@@ -7,10 +7,15 @@
     "persistent": false,
     "scripts": ["main-min.js"]
   },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["content-min.js"]
+    }
+  ],
   "permissions": [
     "contextMenus",
-    "notifications",
-    "http://*/*",
-    "https://*/*"
+    "tabs",
+    "*://*/*"
   ]
 }
