@@ -21,3 +21,19 @@ from the context menu, it will make request to scorer service and
 display the results in a box in the upper right-hand corner of the
 browser window.
 The box will disappear after 5 seconds.
+
+## Development
+
+### Dependencies
+For build project you'll need [Node.js](https://docs.npmjs.com/getting-started/installing-node)
+version over 6.10.
+
+### Install
+```sh
+npm install
+````
+
+### Build
+```sh
+npm run build
+````
