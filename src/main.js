@@ -1,15 +1,14 @@
 import Scorer from './scorer';
 
 let scorer = new Scorer({host: 'https://crab-core.herokuapp.com'});
-let storage = chrome.storage.local;
 
 let injectTab = (tab) => {
   return new Promise((resolve, reject) => {
-    storage.get(`${tab.id}`, (item) => {
-      if (item[tab.id]) {
+    chrome.tabs.executeScript(tab.id, {code: "window.scorerInjected"}, (result) => {
+      if (result[0]) {
         resolve();
       } else {
-        storage.set({[tab.id]: true});
+        chrome.tabs.executeScript(tab.id, {code: "window.scorerInjected = true"});
         if (tab.url.match(/^(http|https):/i)) {
           chrome.tabs.executeScript(tab.id, {file: "content-min.js"}, () => {
             resolve();
@@ -33,8 +32,4 @@ chrome.runtime.onInstalled.addListener(() => {
     id: 'score_word'
   };
   chrome.contextMenus.create(options);
-});
-
-chrome.tabs.onRemoved.addListener((tab, info) => {
-  storage.remove(`${tab.id}`);
 });
