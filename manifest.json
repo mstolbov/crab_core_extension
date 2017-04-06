@@ -7,13 +7,8 @@
     "persistent": false,
     "scripts": ["main-min.js"]
   },
-  "content_scripts": [
-    {
-      "matches": ["http://*/*", "https://*/*"],
-      "js": ["content-min.js"]
-    }
-  ],
   "permissions": [
+    "storage",
     "contextMenus",
     "tabs",
     "http://*/*",
